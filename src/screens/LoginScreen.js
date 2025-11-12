@@ -41,7 +41,7 @@ export default function LoginScreen() {
           value={email}
           onChangeText={setEmail}
           onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-          placeholder="usuario@demo.com"
+          placeholder=""
           keyboardType="email-address"
           autoCapitalize="none"
           error={touched.email ? errors.email : undefined}
@@ -52,10 +52,11 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
           onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-          placeholder="Secret123"
+          placeholder=""
           secureTextEntry
           error={touched.password ? errors.password : undefined}
         />
+        
 
         <PrimaryButton
           title="Entrar"
@@ -70,6 +71,11 @@ export default function LoginScreen() {
         message="Inicio de sesión exitoso."
         onClose={() => setSuccessVisible(false)}
       />
+
+      <TextField
+          label="CORREO: usuario@demo.com CONTRASENA: Secret123"
+          
+        />
     </View>
   );
 }
