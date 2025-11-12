@@ -2,13 +2,17 @@ import { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import TextField from '../components/TextField';
 import PrimaryButton from '../components/PrimaryButton';
+import ModalMessage from '../components/ModalMessage';
 import { validateLogin } from '../utils/validators';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('usuario@demo.com');
+  const [password, setPassword] = useState('Secret123');
   const [touched, setTouched] = useState({ email: false, password: false });
   const [loading, setLoading] = useState(false);
+  const [successVisible, setSuccessVisible] = useState(false);
+  const HARDCODED_EMAIL = 'usuario@demo.com';
+  const HARDCODED_PASSWORD = 'Secret123';
 
   const errors = useMemo(() => validateLogin({ email, password }), [email, password]);
   const isValid = Object.keys(errors).length === 0;
@@ -18,8 +22,12 @@ export default function LoginScreen() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      Alert.alert('Éxito', 'Inicio de sesión simulado.');
-    }, 800);
+      if (email === HARDCODED_EMAIL && password === HARDCODED_PASSWORD) {
+        setSuccessVisible(true);
+      } else {
+        Alert.alert('Error', 'Credenciales inválidas');
+      }
+    }, 700);
   }
 
   return (
@@ -33,7 +41,7 @@ export default function LoginScreen() {
           value={email}
           onChangeText={setEmail}
           onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-          placeholder="tu@email.com"
+          placeholder="usuario@demo.com"
           keyboardType="email-address"
           autoCapitalize="none"
           error={touched.email ? errors.email : undefined}
@@ -44,7 +52,7 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
           onBlur={() => setTouched((t) => ({ ...t, password: true }))}
-          placeholder="••••••"
+          placeholder="Secret123"
           secureTextEntry
           error={touched.password ? errors.password : undefined}
         />
@@ -56,6 +64,12 @@ export default function LoginScreen() {
           loading={loading}
         />
       </View>
+      <ModalMessage
+        visible={successVisible}
+        title="Éxito"
+        message="Inicio de sesión exitoso."
+        onClose={() => setSuccessVisible(false)}
+      />
     </View>
   );
 }
@@ -89,4 +103,3 @@ const styles = StyleSheet.create({
     color: '#6B7280',
   },
 });
-
